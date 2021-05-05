@@ -20,6 +20,9 @@ inputs:
     description: 'Location of helper files (secret-map.json, variables.json etc'
     required: false
     default: ./
+  debug:
+    description: 'Print out additional information'
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
