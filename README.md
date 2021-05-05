@@ -40,7 +40,7 @@ az role assignment create
 This action takes the following inputs:
 * name -> Name of the environment to create / edit
 * app -> Name of your application in radix
-* action -> What action to perform (create, teardown, update-secrets, clean-orphans)
+* action -> What action to perform (create, teardown, update-secrets, clear-orphans)
 * vault -> name of your keyvault (required for update-secrets action)
 * registry -> url to your container registry (required for teardown action)
 * context -> Context for helper files
@@ -226,7 +226,7 @@ jobs:
       - uses: equinor/oilmod-radix-action
         with:
           app: oilmod-my-app
-          action: clean-orphans
+          action: clear-orphans
         env:
           RADIX_TOKEN: ${{ secrets.RADIX_TOKEN }}
 ```

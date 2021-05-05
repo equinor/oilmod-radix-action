@@ -18,7 +18,7 @@ program
   .option('--create-environment', 'Create radix environment')
   .option('--update-secrets', 'Update RADIX secrets')
   .option('--teardown', 'Tear down environment')
-  .option('--clean-orphans', 'Delete orphaned environments')
+  .option('--clear-orphans', 'Delete orphaned environments')
   .option('-c, --copy', 'Copy template to radix-config', false)
   .option('-v, --vault <vaultName>', 'Vault to load secrets from', 'gom-kv-dev')
   .option('-n, --name <envName>', 'Name of environment', ``)
@@ -37,7 +37,7 @@ program.parse(process.argv);
     await setSecrets();
   } else if (options.teardown) {
     await teardownEnvironment();
-  } else if (options.cleanOrphans) {
+  } else if (options.clearOrphans) {
     await clearOrphans()
   }
 })();
@@ -62,7 +62,7 @@ function parseGithub(): Options {
         opts.updateSecrets = true;
         break;
       case 'clear-orphans':
-        opts.cleanOrphans = true;
+        opts.clearOrphans = true;
         break;
       default:
         core.setFailed('No valid action supplied, must be create | teardown | update-secrets | clear-orphans')

@@ -73305,7 +73305,7 @@ var state = {
         createEnvironment: false,
         updateSecrets: false,
         teardown: false,
-        cleanOrphans: false,
+        clearOrphans: false,
         debug: false,
         copy: false,
         vault: '',
@@ -74142,7 +74142,7 @@ program
     .option('--create-environment', 'Create radix environment')
     .option('--update-secrets', 'Update RADIX secrets')
     .option('--teardown', 'Tear down environment')
-    .option('--clean-orphans', 'Delete orphaned environments')
+    .option('--clear-orphans', 'Delete orphaned environments')
     .option('-c, --copy', 'Copy template to radix-config', false)
     .option('-v, --vault <vaultName>', 'Vault to load secrets from', 'gom-kv-dev')
     .option('-n, --name <envName>', 'Name of environment', "")
@@ -74174,7 +74174,7 @@ program.parse(process.argv);
                 _a.sent();
                 return [3 /*break*/, 8];
             case 6:
-                if (!options.cleanOrphans) return [3 /*break*/, 8];
+                if (!options.clearOrphans) return [3 /*break*/, 8];
                 return [4 /*yield*/, clearOrphans()];
             case 7:
                 _a.sent();
@@ -74204,7 +74204,7 @@ function parseGithub() {
                 opts.updateSecrets = true;
                 break;
             case 'clear-orphans':
-                opts.cleanOrphans = true;
+                opts.clearOrphans = true;
                 break;
             default:
                 core.setFailed('No valid action supplied, must be create | teardown | update-secrets | clear-orphans');

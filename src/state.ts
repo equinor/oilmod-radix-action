@@ -5,7 +5,7 @@ export const state = {
         createEnvironment: false,
         updateSecrets: false,
         teardown: false,
-        cleanOrphans: false,
+        clearOrphans: false,
         debug: false,
         copy: false,
         vault: '',
