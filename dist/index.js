@@ -73788,6 +73788,9 @@ function deleteImageTags(env) {
         return teardown_generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
+                    if (!state.options.registry) {
+                        return [2 /*return*/];
+                    }
                     endpoint = "https://" + state.options.registry;
                     client = new container_registry_dist/* ContainerRegistryClient */.FH(endpoint, new dist/* DefaultAzureCredential */.y0());
                     iterator = client.listRepositories();
@@ -73868,7 +73871,7 @@ function teardown_updateConfig(obj) {
                     doc.setSchema();
                     doc.contents = doc.schema.createNode(obj);
                     toYaml = String(doc);
-                    return [4 /*yield*/, teardown_writeFile('../radixconfig.yaml', toYaml, 'utf8')];
+                    return [4 /*yield*/, teardown_writeFile(state.environment.RADIX_FILE, toYaml, 'utf8')];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];

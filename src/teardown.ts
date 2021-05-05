@@ -38,6 +38,9 @@ export async function teardownEnvironment() {
 }
 
 async function deleteImageTags(env: string) {
+    if (!state.options.registry) {
+        return;
+    }
     const endpoint = `https://${state.options.registry}`;
     // Create a ContainerRegistryClient that will authenticate through Active Directory
     const client = new ContainerRegistryClient(endpoint, new DefaultAzureCredential());
@@ -70,5 +73,5 @@ async function updateConfig(obj: RadixConfig) {
     doc.setSchema()
     doc.contents = doc.schema.createNode(obj)
     const toYaml = String(doc);
-    await writeFile('../radixconfig.yaml', toYaml, 'utf8');
+    await writeFile(state.environment.RADIX_FILE, toYaml, 'utf8');
 }
