@@ -1,0 +1,25 @@
+name: 'Radix environment helper'
+description: 'Handles per-environment setup for OMNIA Radix'
+inputs:
+  name:
+    description: 'Name of your feature environment (e.g ab-12345)'
+    required: true
+  app:
+    description: 'Name of your application (in radix)' # TODO: Extract from radixconfig
+    required: false
+  action:
+    description: 'Action to perform (can be one of create | teardown | update-secrets | clear-orphans)'
+    required: false
+  vault:
+    description: 'Name of the keyvault you want to fetch secrets from (required if action = update-secrets)'
+    required: false
+  registry:
+    description: 'Name of the container registry (required to perform teardown)'
+    required: false
+  context:
+    description: 'Location of helper files (secret-map.json, variables.json etc'
+    required: false
+    default: ./
+runs:
+  using: 'node14'
+  main: 'dist/index.js'

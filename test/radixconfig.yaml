@@ -1,0 +1,51 @@
+apiVersion: radix.equinor.com/v1
+kind: RadixApplication
+metadata:
+  name: app-name
+spec:
+  environments:
+    - name: qa
+    - name: prod
+  components:
+    - name: recon-client
+      image: container-registry.azurecr.io/app-name/client:{imageTagName}
+      environmentConfig:
+        - environment: prod
+          imageTagName: prod
+          replicas: 1
+          variables:
+            CLIENT_ID: ""
+      publicPort: http
+      ingressConfiguration:
+        - websocketfriendly
+      alwaysPullImageOnDeploy: true
+      ports:
+        - name: http
+          port: 8081
+    - name: recon
+      image: container-registry.azurecr.io/app-name/api:{imageTagName}
+      secrets:
+        - DB_APP_PASSWORD
+        - APP_INSIGHTS_KEY
+        - AZURE_STORAGE_ACCOUNT_KEY
+      alwaysPullImageOnDeploy: true
+      ports:
+        - name: http
+          port: 8080
+      environmentConfig:
+        - environment: prod
+          imageTagName: prod
+          monitoring: true
+          horizontalScaling:
+            minReplicas: 2
+            maxReplicas: 6
+          resources:
+            requests:
+              memory: 2096Mi
+              cpu: 1000m
+            limits:
+              memory: 2096Mi
+              cpu: 1000m
+          variables:
+            ENV: prod
+            DB_APP_LOGIN: ""
