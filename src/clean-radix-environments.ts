@@ -1,6 +1,6 @@
 import { ApiEnvironment } from "./radix-config";
 import { state } from "./state";
-import { callRadix } from "./util";
+import { callRadix, log } from './util';
 
 export async function clearOrphans() {
     const { app } = state.options;
@@ -8,7 +8,7 @@ export async function clearOrphans() {
     try {
         const environments = await callRadix(url).then(r => r.json()) as ApiEnvironment[];
         if (state.options.debug) {
-            console.log(JSON.stringify(environments, null, 2));
+            log(JSON.stringify(environments, null, 2));
         }
         for (let env of environments) {
             if (env.status === 'Orphan') {

@@ -73324,6 +73324,10 @@ var state = {
 // EXTERNAL MODULE: ./node_modules/node-fetch/lib/index.js
 var lib = __nccwpck_require__(467);
 var lib_default = /*#__PURE__*/__nccwpck_require__.n(lib);
+// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
+var core = __nccwpck_require__(2186);
+// EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
+var github = __nccwpck_require__(5438);
 ;// CONCATENATED MODULE: ./src/util.ts
 var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
@@ -73374,6 +73378,8 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 };
 
 
+
+
 function delay(ms) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -73390,6 +73396,14 @@ function util_callRadix(path, config) {
             return [2 /*return*/, lib_default()(url, __assign(__assign({}, config), { headers: __assign(__assign({}, (config.headers || {})), { Authorization: "Bearer " + state.environment.RADIX_TOKEN }) }))];
         });
     });
+}
+function log(message) {
+    if (github.context.eventName) {
+        core.info(message);
+    }
+    else {
+        console.log(message);
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/clean-radix-environments.ts
@@ -73446,7 +73460,7 @@ function clearOrphans() {
                 case 2:
                     environments = _a.sent();
                     if (state.options.debug) {
-                        console.log(JSON.stringify(environments, null, 2));
+                        log(JSON.stringify(environments, null, 2));
                     }
                     _i = 0, environments_1 = environments;
                     _a.label = 3;
@@ -73865,8 +73879,6 @@ function teardown_updateConfig(obj) {
 
 // EXTERNAL MODULE: ./node_modules/@azure/keyvault-secrets/dist/index.js
 var keyvault_secrets_dist = __nccwpck_require__(181);
-// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
-var core = __nccwpck_require__(2186);
 ;// CONCATENATED MODULE: ./src/update-secrets.ts
 var update_secrets_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -74076,8 +74088,6 @@ function waitForEnvironment(wait) {
     });
 }
 
-// EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
-var github = __nccwpck_require__(5438);
 ;// CONCATENATED MODULE: ./index.ts
 var index_assign = (undefined && undefined.__assign) || function () {
     index_assign = Object.assign || function(t) {
