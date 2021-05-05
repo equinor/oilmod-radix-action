@@ -231,24 +231,7 @@ jobs:
           RADIX_TOKEN: ${{ secrets.RADIX_TOKEN }}
 ```
 
-#### CLI:
-
-Send alert via mail:
-```shell script
-$ node index.js -v keyvault-name --notifyBy email --to mail@mail.com [--to mail2@mail.com]
-```
-
-Send alert via Slack:
-```shell script
-  $ node index.js -v keyvault-name --notifyBy slack --to channel
-```
-If notifyBy is omitted, warnings are printed to the console:
-
-```shell script
-  $ node index.js -v keyvault-name
-```
-
 
 #### Building:
 Builds are performed with [@vercel/ncc](https://www.npmjs.com/package/@vercel/ncc):  
-`ncc build index.js --license licenses.txt`
+`ncc build index.ts --license licenses.txt`
