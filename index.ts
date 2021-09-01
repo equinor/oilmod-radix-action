@@ -57,7 +57,7 @@ program.parse(process.argv);
       } else {
         console.log(JSON.stringify(ex));
         console.log(JSON.stringify(process.env))
-        core.setFailed(`Invalid response from Radix, expected 20x or 404, got ${ex.status}`);
+        core.setFailed(JSON.stringify([ex, process.env]));
       }
     }
   }
