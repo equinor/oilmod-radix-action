@@ -74887,7 +74887,9 @@ program.parse(process.argv);
                 core.setOutput('exists', false);
             }
             else {
-                core.setFailed(`Invalid response from Radix, expected 20x or 404, got ${ex.status}`);
+                console.log(JSON.stringify(ex));
+                console.log(JSON.stringify(process.env));
+                core.setFailed(JSON.stringify([ex, process.env]));
             }
         }
     }
