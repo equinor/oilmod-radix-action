@@ -55,6 +55,8 @@ program.parse(process.argv);
       if (ex.status === 404) {
         core.setOutput('exists', false);
       } else {
+        core.info(JSON.stringify(ex));
+        core.info(JSON.stringify(process.env))
         core.setFailed(`Invalid response from Radix, expected 20x or 404, got ${ex.status}`);
       }
     }
