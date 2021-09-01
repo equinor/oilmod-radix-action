@@ -34170,6 +34170,7 @@ class EnvironmentImpl {
 exports.EnvironmentImpl = EnvironmentImpl;
 //# sourceMappingURL=environment.js.map
 
+
 /***/ }),
 
 /***/ 5767:
@@ -74463,7 +74464,7 @@ function util_delay(ms) {
     });
 }
 process.env.API_URL = process.env.API_URL || 'https://api.radix.equinor.com/api/v1';
-const util_radix = new dist.Radix(state_state.environment.RADIX_TOKEN);
+const util_radix = new dist.Radix(process.env.RADIX_TOKEN);
 function callRadix(path, config = {}) {
     return __awaiter(this, void 0, void 0, function* () {
         const url = `${state.environment.RADIX_API}/${path}`;
@@ -74873,7 +74874,8 @@ program.parse(process.argv);
     }
     else if (options.checkEnvironment) {
         try {
-            const res = yield util_radix.environment().getEnvironment(options.app, options.name);
+            const res = yield util_radix.environment().getEnvironment('oilmod-gom', 'ab-116451');
+            // const res = await radix.environment().getEnvironment(options.app, options.name);
             if (res.status !== 'Orphan') {
                 core.setOutput('exists', true);
             }
@@ -74882,14 +74884,13 @@ program.parse(process.argv);
             }
         }
         catch (err) {
+            console.log(err);
             const ex = err;
             if (ex.status === 404) {
                 core.setOutput('exists', false);
             }
             else {
-                console.log(JSON.stringify(ex));
-                console.log(JSON.stringify(process.env));
-                core.setFailed(JSON.stringify([ex, process.env]));
+                core.setFailed(`Invalid response from Radix, expected 20x or 404, got ${ex.status}`);
             }
         }
     }

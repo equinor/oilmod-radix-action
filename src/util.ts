@@ -10,7 +10,7 @@ export async function delay (ms: number) {
 }
 
 process.env.API_URL = process.env.API_URL || 'https://api.radix.equinor.com/api/v1';
-export const radix = new Radix(state.environment.RADIX_TOKEN);
+export const radix = new Radix(process.env.RADIX_TOKEN);
 
 export async function callRadix(path: string, config: Partial<RequestInit> = {}) {
     const url = `${state.environment.RADIX_API}/${path}`;

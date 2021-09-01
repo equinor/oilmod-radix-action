@@ -44,20 +44,20 @@ program.parse(process.argv);
     await clearOrphans()
   } else if (options.checkEnvironment) {
     try {
-      const res = await radix.environment().getEnvironment(options.app, options.name);
+      const res = await radix.environment().getEnvironment('oilmod-gom', 'ab-116451')
+      // const res = await radix.environment().getEnvironment(options.app, options.name);
       if (res.status !== 'Orphan') {
         core.setOutput('exists', true);
       } else {
         core.setOutput('exists', false);
       }
     } catch (err) {
+      console.log(err);
       const ex: Response = err;
       if (ex.status === 404) {
         core.setOutput('exists', false);
       } else {
-        console.log(JSON.stringify(ex));
-        console.log(JSON.stringify(process.env))
-        core.setFailed(JSON.stringify([ex, process.env]));
+        core.setFailed(`Invalid response from Radix, expected 20x or 404, got ${ex.status}`);
       }
     }
   }
