@@ -74874,8 +74874,7 @@ program.parse(process.argv);
     }
     else if (options.checkEnvironment) {
         try {
-            const res = yield util_radix.environment().getEnvironment('oilmod-gom', 'ab-116451');
-            // const res = await radix.environment().getEnvironment(options.app, options.name);
+            const res = yield util_radix.environment().getEnvironment(options.app, options.name);
             if (res.status !== 'Orphan') {
                 core.setOutput('exists', true);
             }

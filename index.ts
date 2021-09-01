@@ -44,8 +44,7 @@ program.parse(process.argv);
     await clearOrphans()
   } else if (options.checkEnvironment) {
     try {
-      const res = await radix.environment().getEnvironment('oilmod-gom', 'ab-116451')
-      // const res = await radix.environment().getEnvironment(options.app, options.name);
+      const res = await radix.environment().getEnvironment(options.app, options.name);
       if (res.status !== 'Orphan') {
         core.setOutput('exists', true);
       } else {
