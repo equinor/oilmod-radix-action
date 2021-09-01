@@ -18,7 +18,7 @@ export async function setSecrets() {
     const {vault, name: environment} = state.options;
     const buf = await readFile(state.environment.RADIX_FILE);
     const yml = buf.toString();
-    const radixConfig = yaml.parse(yml) as RadixConfig;
+    const radixConfig = yaml.parse(yml, {prettyErrors: true}) as RadixConfig;
     appName = radixConfig.metadata.name;
     env = environment;
     // Build the URL to reach your key vault
