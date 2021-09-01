@@ -1,6 +1,6 @@
 import { DefaultAzureCredential } from "@azure/identity";
 import { SecretClient } from "@azure/keyvault-secrets";
-import { callRadix, delay } from "./util";
+import { radix, delay } from "./util";
 import fs from 'fs';
 import {promisify} from 'util';
 import * as yaml from 'yaml';
@@ -41,8 +41,6 @@ async function setSecretsForComponent(component: string, client: SecretClient, s
 
     const secretMap = new Map();
 
-    await waitForEnvironment();
-
     for (let name of secrets) {
         const value = await loadSecret(secretVaultMapping[name] || name, client);
         secretMap.set(name, value);
@@ -54,12 +52,7 @@ async function setSecretsForComponent(component: string, client: SecretClient, s
 }
 
 async function updateRadixSecret(component: string, secretName: string, secretValue: string) {
-    const url = `applications/${appName}/environments/${env}/components/${component}/secrets/${secretName}`;
-    const payload = { secretValue };
-    const res = await callRadix(url, {
-        method: 'PUT',
-        body: JSON.stringify(payload)
-    })
+    const res = await radix.environment().changeEnvironmentComponentSecret(appName, env, component, secretName, {secretValue})
     const status = res.status;
     if (status >= 200 && status < 400) {
         return true;
@@ -84,15 +77,17 @@ async function loadSecret(query: string, client: SecretClient) {
 let attempts = 0;
 // Function to ensure we wait until the radix environment is created before proceeding. Default wait is 10 ms.
 export async function waitForEnvironment(wait = 10) {
-    const url = `applications/${appName}/environments/${env}`;
     await delay(wait);
-    const statusCode = await callRadix(url).then(r => r.status);
-    if (statusCode === 404) {
+    try {
+        await radix.environment().getEnvironment(appName, env);
+    } catch {
         if (attempts > 12) {
             throw new Error('Radix environment took more than 120 seconds to create, bailing.')
+        } else {
+            attempts = attempts + 1;
+            return waitForEnvironment(10000);
         }
-        attempts = attempts + 1;
-        return waitForEnvironment(10000);
     }
+
     return true;
 }

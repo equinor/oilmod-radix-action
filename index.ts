@@ -7,6 +7,8 @@ import { Options, state } from './src/state';
 import path from 'path';
 import * as core from '@actions/core';
 import * as github from '@actions/github';
+import { radix } from './src/util';
+import { Response, ResponseInit } from 'node-fetch';
 
 
 const program = commander.program;
@@ -18,6 +20,7 @@ program
   .option('--create-environment', 'Create radix environment')
   .option('--update-secrets', 'Update RADIX secrets')
   .option('--teardown', 'Tear down environment')
+  .option('--check-environment', 'Check if environment exists')
   .option('--clear-orphans', 'Delete orphaned environments')
   .option('-c, --copy', 'Copy template to radix-config', false)
   .option('-v, --vault <vaultName>', 'Vault to load secrets from', 'gom-kv-dev')
@@ -39,6 +42,22 @@ program.parse(process.argv);
     await teardownEnvironment();
   } else if (options.clearOrphans) {
     await clearOrphans()
+  } else if (options.checkEnvironment) {
+    try {
+      const res = await radix.environment().getEnvironment(options.app, options.name);
+      if (res.status !== 'Orphan') {
+        core.setOutput('exists', true);
+      } else {
+        core.setOutput('exists', false);
+      }
+    } catch (err) {
+      const ex: Response = err;
+      if (ex.status === 404) {
+        core.setOutput('exists', false);
+      } else {
+        core.setFailed(`Invalid response from Radix, expected 20x or 404, got ${ex.status}`);
+      }
+    }
   }
 })();
 
@@ -64,8 +83,11 @@ function parseGithub(): Options {
       case 'clear-orphans':
         opts.clearOrphans = true;
         break;
+      case 'check-environment':
+        opts.checkEnvironment = true;
+        break;
       default:
-        core.setFailed('No valid action supplied, must be create | teardown | update-secrets | clear-orphans')
+        core.setFailed('No valid action supplied, must be create | teardown | update-secrets | clear-orphans | check-environment')
         process.exit();
     }
   } catch (error) {

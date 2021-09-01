@@ -8,7 +8,7 @@ inputs:
     description: 'Name of your application (in radix)' # TODO: Extract from radixconfig
     required: false
   action:
-    description: 'Action to perform (can be one of create | teardown | update-secrets | clear-orphans)'
+    description: 'Action to perform (can be one of create | teardown | update-secrets | clear-orphans | check-environment)'
     required: false
   vault:
     description: 'Name of the keyvault you want to fetch secrets from (required if action = update-secrets)'
@@ -23,6 +23,9 @@ inputs:
   debug:
     description: 'Print out additional information'
     required: false
+outputs:
+  exists: # id of output
+    description: 'Prints if check-environment is ran. Returns true or false'
 runs:
   using: 'node12'
   main: 'dist/index.js'

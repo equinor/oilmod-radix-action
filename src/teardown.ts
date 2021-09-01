@@ -2,7 +2,7 @@ import * as yaml from 'yaml';
 import { RadixConfig, Component, Variables } from './radix-config';
 import fs from 'fs';
 import { promisify } from 'util';
-import { callRadix } from './util';
+import { radix } from './util';
 import { DefaultAzureCredential } from "@azure/identity";
 import { ContainerRegistryClient, TagProperties } from "@azure/container-registry";
 import { state } from './state';
@@ -62,9 +62,8 @@ async function deleteImageTags(env: string) {
   
 
 async function teardownInRadix(env: string, appName: string) {
-    const status = await callRadix(`/applications/${appName}/environments/${env}`, {
-        method: 'DELETE'
-    }).then(r => r.status);
+    const status = await radix.environment().deleteEnvironment(appName, env)
+      .then(r => r.status);
     console.log(status);
 }
 

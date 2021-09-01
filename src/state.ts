@@ -7,6 +7,7 @@ export const state = {
         teardown: false,
         clearOrphans: false,
         debug: false,
+        checkEnvironment: false,
         copy: false,
         vault: '',
         name: '',

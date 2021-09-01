@@ -413,6 +413,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
+@ngx-stoui/radix-api
+ISC
+
 @octokit/auth-token
 MIT
 The MIT License

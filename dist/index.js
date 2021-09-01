@@ -33353,6 +33353,1118 @@ function e(e){return e&&"object"==typeof e&&"default"in e?e.default:e}Object.def
 
 /***/ }),
 
+/***/ 5397:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ApplicationImpl = void 0;
+const node_fetch_1 = __nccwpck_require__(467);
+class ApplicationImpl {
+    constructor(token) {
+        this.token = token;
+    }
+    /**
+    Gets the application application by name
+    
+    @param {string} appName Name of application
+  */
+    getApplication(appName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Update application registration
+      
+      @param {string} appName Name of application
+      @param {@link ApplicationRegistration} applicationRegistration Application to register
+    */
+    changeRegistrationDetails(appName, applicationRegistration) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+            body: JSON.stringify(applicationRegistration)
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Delete application
+      
+      @param {string} appName name of application
+    */
+    deleteApplication(appName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+    /**
+      Updates specific field(s) of an application registration
+      
+      @param {string} appName Name of application
+      @param {@link ApplicationPatchRequest} patchRequest Application to patch
+    */
+    modifyRegistrationDetails(appName, patchRequest) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+            body: JSON.stringify(patchRequest)
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Lists the application build secrets
+      
+      @param {string} appName name of Radix application
+    */
+    getBuildSecrets(appName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/buildsecrets`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Update an application build secret
+      
+      @param {string} appName Name of application
+      @param {string} secretName name of secret
+      @param {@link SecretParameters} secretValue New secret value
+    */
+    updateBuildSecretsSecretValue(appName, secretName, secretValue) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/buildsecrets/${secretName}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+            body: JSON.stringify(secretValue)
+        });
+    }
+    /**
+      Checks if the deploy key is correctly setup for application by cloning the repository
+      
+      @param {string} appName Name of application
+    */
+    isDeployKeyValid(appName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/deploykey-valid`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+    /**
+      Lists the application deployments
+      
+      @param {string} appName name of Radix application
+      @param {string} environment environment of Radix application
+      @param {boolean} latest indicator to allow only listing latest
+    */
+    getDeployments(appName, environment, latest) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/deployments?environment=${environment}&latest=${latest}`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Lists the supported pipelines
+      
+      @param {string} appName Name of application
+    */
+    listPipelines(appName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/pipelines`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Run a build pipeline for a given application and branch
+      
+      @param {string} appName Name of application
+      @param {@link PipelineParametersBuild} PipelineParametersBuild Pipeline parameters
+    */
+    triggerPipelineBuild(appName, PipelineParametersBuild) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/pipelines/build`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+            body: JSON.stringify(PipelineParametersBuild)
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Run a build-deploy pipeline for a given application and branch
+      
+      @param {string} appName Name of application
+      @param {@link PipelineParametersBuild} PipelineParametersBuild Pipeline parameters
+    */
+    triggerPipelineBuildDeploy(appName, PipelineParametersBuild) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/pipelines/build-deploy`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+            body: JSON.stringify(PipelineParametersBuild)
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Run a deploy pipeline for a given application and environment
+      
+      @param {string} appName Name of application
+      @param {@link PipelineParametersDeploy} PipelineParametersDeploy Pipeline parameters
+    */
+    triggerPipelineDeploy(appName, PipelineParametersDeploy) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/pipelines/deploy`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+            body: JSON.stringify(PipelineParametersDeploy)
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Run a promote pipeline for a given application and branch
+      
+      @param {string} appName Name of application
+      @param {@link PipelineParametersPromote} PipelineParametersPromote Pipeline parameters
+    */
+    triggerPipelinePromote(appName, PipelineParametersPromote) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/pipelines/promote`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+            body: JSON.stringify(PipelineParametersPromote)
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Lists the application private image hubs
+      
+      @param {string} appName name of Radix application
+    */
+    getPrivateImageHubs(appName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/privateimagehubs`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Update an application private image hub secret
+      
+      @param {string} appName Name of application
+      @param {string} serverName server name to update
+      @param {@link SecretParameters} imageHubSecret New secret value
+    */
+    updatePrivateImageHubsSecretValue(appName, serverName, imageHubSecret) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/privateimagehubs/${serverName}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+            body: JSON.stringify(imageHubSecret)
+        });
+    }
+    /**
+      Regenerates deploy key
+      
+      @param {string} appName name of application
+      @param {@link RegenerateDeployKeyAndSecretData} regenerateDeployKeyAndSecretData Regenerate deploy key and secret data
+    */
+    regenerateDeployKey(appName, regenerateDeployKeyAndSecretData) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/regenerate-deploy-key`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+            body: JSON.stringify(regenerateDeployKeyAndSecretData)
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Regenerates machine user token
+      
+      @param {string} appName name of application
+    */
+    regenerateMachineUserToken(appName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/regenerate-machine-user-token`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Restart all components in all environments of the application
+      - Stops all running components in all environments of the application
+      - Pulls new images from image hub in radix configuration
+      - Starts all components in all environments of the application again using up to date image
+    
+      
+      @param {string} appName Name of application
+    */
+    restartApplication(appName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/restart`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+    /**
+      Start all components in all environments of the application
+      
+      @param {string} appName Name of application
+    */
+    startApplication(appName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/start`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+    /**
+      Stops all components in the environment
+      
+      @param {string} appName Name of application
+    */
+    stopApplication(appName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/stop`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+}
+exports.ApplicationImpl = ApplicationImpl;
+//# sourceMappingURL=application.js.map
+
+/***/ }),
+
+/***/ 1193:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.BuildstatusImpl = void 0;
+const node_fetch_1 = __nccwpck_require__(467);
+class BuildstatusImpl {
+    constructor(token) {
+        this.token = token;
+    }
+    /**
+    Show the application buildStatus
+    
+    @param {string} appName name of Radix application
+    @param {string} envName name of the environment
+    @param {string} pipeline Type of pipeline job to get status for.
+  */
+    getBuildStatus(appName, envName, pipeline) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}/buildstatus?pipeline=${pipeline}`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+}
+exports.BuildstatusImpl = BuildstatusImpl;
+//# sourceMappingURL=buildstatus.js.map
+
+/***/ }),
+
+/***/ 3960:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ComponentImpl = void 0;
+const node_fetch_1 = __nccwpck_require__(467);
+class ComponentImpl {
+    constructor(token) {
+        this.token = token;
+    }
+    /**
+    Get components for a deployment
+    
+    @param {string} appName Name of application
+    @param {string} deploymentName Name of deployment
+  */
+    components(appName, deploymentName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/deployments/${deploymentName}/components`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Get logs from a deployed pod
+      
+      @param {string} appName Name of application
+      @param {string} deploymentName Name of deployment
+      @param {string} componentName Name of component
+      @param {string} podName Name of pod
+      @param {string} sinceTime Get log only from sinceTime (example 2020-03-18T07:20:41+00:00)
+    */
+    log(appName, deploymentName, componentName, podName, sinceTime) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/deployments/${deploymentName}/components/${componentName}/replicas/${podName}/logs?sinceTime=${sinceTime}`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Get environment variables for component
+      
+      @param {string} appName Name of application
+      @param {string} envName Name of environment
+      @param {string} componentName Name of component
+    */
+    envVars(appName, envName, componentName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}/components/${componentName}/envvars`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Get logs from a deployed pod
+      
+      @param {string} appName Name of application
+      @param {string} envName Name of environment
+      @param {string} componentName Name of component
+      @param {string} podName Name of pod
+      @param {string} sinceTime Get log only from sinceTime (example 2020-03-18T07:20:41+00:00)
+    */
+    replicaLog(appName, envName, componentName, podName, sinceTime) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}/components/${componentName}/replicas/${podName}/logs?sinceTime=${sinceTime}`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Restart a component
+      - Stops running the component container
+      - Pulls new image from image hub in radix configuration
+      - Starts the container again using up to date image
+    
+      
+      @param {string} appName Name of application
+      @param {string} envName Name of environment
+      @param {string} componentName Name of component
+    */
+    restartComponent(appName, envName, componentName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}/components/${componentName}/restart`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+    /**
+      Start component
+      
+      @param {string} appName Name of application
+      @param {string} envName Name of environment
+      @param {string} componentName Name of component
+    */
+    startComponent(appName, envName, componentName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}/components/${componentName}/start`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+    /**
+      Stops component
+      
+      @param {string} appName Name of application
+      @param {string} envName Name of environment
+      @param {string} componentName Name of component
+    */
+    stopComponent(appName, envName, componentName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}/components/${componentName}/stop`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+}
+exports.ComponentImpl = ComponentImpl;
+//# sourceMappingURL=component.js.map
+
+/***/ }),
+
+/***/ 9882:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.DeploymentImpl = void 0;
+const node_fetch_1 = __nccwpck_require__(467);
+class DeploymentImpl {
+    constructor(token) {
+        this.token = token;
+    }
+    /**
+    Get deployment details
+    
+    @param {string} appName name of Radix application
+    @param {string} deploymentName name of deployment
+  */
+    getDeployment(appName, deploymentName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/deployments/${deploymentName}`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+}
+exports.DeploymentImpl = DeploymentImpl;
+//# sourceMappingURL=deployment.js.map
+
+/***/ }),
+
+/***/ 6860:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.EnvironmentImpl = void 0;
+const node_fetch_1 = __nccwpck_require__(467);
+class EnvironmentImpl {
+    constructor(token) {
+        this.token = token;
+    }
+    /**
+    Lists the environments for an application
+    
+    @param {string} appName name of Radix application
+  */
+    getEnvironmentSummary(appName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Get details for an application environment
+      
+      @param {string} appName name of Radix application
+      @param {string} envName name of environment
+    */
+    getEnvironment(appName, envName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Creates application environment
+      
+      @param {string} appName name of Radix application
+      @param {string} envName name of environment
+    */
+    createEnvironment(appName, envName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+    /**
+      Deletes application environment
+      
+      @param {string} appName name of Radix application
+      @param {string} envName name of environment
+    */
+    deleteEnvironment(appName, envName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+    /**
+      Update an application environment component secret
+      
+      @param {string} appName Name of application
+      @param {string} envName environment of Radix application
+      @param {string} componentName environment component of Radix application
+      @param {string} secretName environment component secret name to be updated
+      @param {@link SecretParameters} componentSecret New secret value
+    */
+    changeEnvironmentComponentSecret(appName, envName, componentName, secretName, componentSecret) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}/components/${componentName}/secrets/${secretName}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+            body: JSON.stringify(componentSecret)
+        });
+    }
+    /**
+      Lists the application environment deployments
+      
+      @param {string} appName name of Radix application
+      @param {string} envName environment of Radix application
+      @param {boolean} latest indicator to allow only listing latest
+    */
+    getApplicationEnvironmentDeployments(appName, envName, latest) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}/deployments?latest=${latest}`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Lists events for an application environment
+      
+      @param {string} appName name of Radix application
+      @param {string} envName name of environment
+    */
+    getEnvironmentEvents(appName, envName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}/events`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Restart all components in the environment
+      - Stops all running components in the environment
+      - Pulls new images from image hub in radix configuration
+      - Starts all components in the environment again using up to date image
+    
+      
+      @param {string} appName Name of application
+      @param {string} envName Name of environment
+    */
+    restartEnvironment(appName, envName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}/restart`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+    /**
+      Start all components in the environment
+      
+      @param {string} appName Name of application
+      @param {string} envName Name of environment
+    */
+    startEnvironment(appName, envName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}/start`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+    /**
+      Stops all components in the environment
+      
+      @param {string} appName Name of application
+      @param {string} envName Name of environment
+    */
+    stopEnvironment(appName, envName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}/stop`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+}
+exports.EnvironmentImpl = EnvironmentImpl;
+//# sourceMappingURL=environment.js.map
+
+/***/ }),
+
+/***/ 5767:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.JobImpl = void 0;
+const node_fetch_1 = __nccwpck_require__(467);
+class JobImpl {
+    constructor(token) {
+        this.token = token;
+    }
+    /**
+    Get log from a scheduled job
+    
+    @param {string} appName Name of application
+    @param {string} envName Name of environment
+    @param {string} jobComponentName Name of job-component
+    @param {string} scheduledJobName Name of scheduled job
+    @param {string} sinceTime Get log only from sinceTime (example 2020-03-18T07:20:41+00:00)
+  */
+    jobLog(appName, envName, jobComponentName, scheduledJobName, sinceTime) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}/jobcomponents/${jobComponentName}/scheduledjobs/${scheduledJobName}/logs?sinceTime=${sinceTime}`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+}
+exports.JobImpl = JobImpl;
+//# sourceMappingURL=job.js.map
+
+/***/ }),
+
+/***/ 5270:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.PipelineJobImpl = void 0;
+const node_fetch_1 = __nccwpck_require__(467);
+class PipelineJobImpl {
+    constructor(token) {
+        this.token = token;
+    }
+    /**
+    Gets the summary of jobs for a given application
+    
+    @param {string} appName name of Radix application
+  */
+    getApplicationJobs(appName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/jobs`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Gets the detail of a given pipeline-job for a given application
+      
+      @param {string} appName name of Radix application
+      @param {string} jobName name of job
+    */
+    getApplicationJob(appName, jobName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/jobs/${jobName}`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Gets a pipeline logs, by combining different steps (jobs) logs
+      
+      @param {string} appName name of Radix application
+      @param {string} jobName Name of pipeline job
+      @param {string} sinceTime Get log only from sinceTime (example 2020-03-18T07:20:41+00:00)
+    */
+    getApplicationJobLogs(appName, jobName, sinceTime) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/jobs/${jobName}/logs?sinceTime=${sinceTime}`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Gets list of vulnerabilities found by the scan step
+      
+      @param {string} appName name of Radix application
+      @param {string} jobName Name of pipeline job
+      @param {string} stepName Name of the step
+    */
+    getPipelineJobStepScanOutput(appName, jobName, stepName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/jobs/${jobName}/steps/${stepName}/output/scan`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Stops job
+      
+      @param {string} appName name of application
+      @param {string} jobName name of job
+    */
+    stopApplicationJob(appName, jobName) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/jobs/${jobName}/stop`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        });
+    }
+}
+exports.PipelineJobImpl = PipelineJobImpl;
+//# sourceMappingURL=pipeline-job.js.map
+
+/***/ }),
+
+/***/ 4511:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.PlatformImpl = void 0;
+const node_fetch_1 = __nccwpck_require__(467);
+class PlatformImpl {
+    constructor(token) {
+        this.token = token;
+    }
+    /**
+    Lists the applications. NOTE - doesn't get applicationSummary.latestJob.Environments
+    
+    @param {string} sshRepo ssh repo to identify Radix application if exists
+  */
+    showApplications(sshRepo) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications?sshRepo=${sshRepo}`, {
+            method: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+    /**
+      Create an application registration
+      
+      @param {@link ApplicationRegistration} applicationRegistration Application to register
+    */
+    registerApplication(applicationRegistration) {
+        return node_fetch_1.default(`${process.env.API_URL}/applications`, {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + this.token
+            },
+            body: JSON.stringify(applicationRegistration)
+        }).then(r => {
+            if (r.status < 300) {
+                return r.json();
+            }
+            else {
+                throw r;
+            }
+        });
+    }
+}
+exports.PlatformImpl = PlatformImpl;
+//# sourceMappingURL=platform.js.map
+
+/***/ }),
+
+/***/ 447:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Radix = void 0;
+const application_1 = __nccwpck_require__(5397);
+const buildstatus_1 = __nccwpck_require__(1193);
+const component_1 = __nccwpck_require__(3960);
+const deployment_1 = __nccwpck_require__(9882);
+const environment_1 = __nccwpck_require__(6860);
+const job_1 = __nccwpck_require__(5767);
+const pipeline_job_1 = __nccwpck_require__(5270);
+const platform_1 = __nccwpck_require__(4511);
+/**
+* Radix is a wrapper around the radix APIs, meant to be used in CI tools for automations.
+* It is designed to compliment the radix CLI where you need more tools, or want to run multiple commands programmatically.
+* It currently exposes all public API endpoints, but some may not work as expected (e.g createEnvironment)
+*/
+class Radix {
+    constructor(token) {
+        this.token = token;
+    }
+    platform() {
+        return new platform_1.PlatformImpl(this.token);
+    }
+    application() {
+        return new application_1.ApplicationImpl(this.token);
+    }
+    deployment() {
+        return new deployment_1.DeploymentImpl(this.token);
+    }
+    component() {
+        return new component_1.ComponentImpl(this.token);
+    }
+    environment() {
+        return new environment_1.EnvironmentImpl(this.token);
+    }
+    buildstatus() {
+        return new buildstatus_1.BuildstatusImpl(this.token);
+    }
+    job() {
+        return new job_1.JobImpl(this.token);
+    }
+    pipelinejob() {
+        return new pipeline_job_1.PipelineJobImpl(this.token);
+    }
+}
+exports.Radix = Radix;
+__exportStar(__nccwpck_require__(1077), exports);
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ 1077:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+//# sourceMappingURL=models.js.map
+
+/***/ }),
+
 /***/ 334:
 /***/ ((__unused_webpack_module, exports) => {
 
@@ -73300,13 +74412,14 @@ var external_path_ = __nccwpck_require__(5622);
 var external_path_default = /*#__PURE__*/__nccwpck_require__.n(external_path_);
 ;// CONCATENATED MODULE: ./src/state.ts
 
-var state = {
+const state_state = {
     options: {
         createEnvironment: false,
         updateSecrets: false,
         teardown: false,
         clearOrphans: false,
         debug: false,
+        checkEnvironment: false,
         copy: false,
         vault: '',
         name: '',
@@ -73315,7 +74428,7 @@ var state = {
         context: ''
     },
     environment: {
-        RADIX_API: "https://api.radix.equinor.com/api/v1",
+        RADIX_API: `https://api.radix.equinor.com/api/v1`,
         RADIX_FILE: external_path_default().join(process.cwd(), 'radixconfig.yaml'),
         RADIX_TOKEN: ''
     }
@@ -73323,23 +74436,13 @@ var state = {
 
 // EXTERNAL MODULE: ./node_modules/node-fetch/lib/index.js
 var lib = __nccwpck_require__(467);
-var lib_default = /*#__PURE__*/__nccwpck_require__.n(lib);
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(2186);
 // EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
 var github = __nccwpck_require__(5438);
+// EXTERNAL MODULE: ./node_modules/@ngx-stoui/radix-api/dist/index.js
+var dist = __nccwpck_require__(447);
 ;// CONCATENATED MODULE: ./src/util.ts
-var __assign = (undefined && undefined.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -73349,55 +74452,28 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 
 
 
 
-function delay(ms) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            return [2 /*return*/, new Promise(function (resolve) { return setTimeout(resolve, ms); })];
-        });
+
+function util_delay(ms) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise(resolve => setTimeout(resolve, ms));
     });
 }
-function util_callRadix(path, config) {
-    if (config === void 0) { config = {}; }
-    return __awaiter(this, void 0, void 0, function () {
-        var url;
-        return __generator(this, function (_a) {
-            url = state.environment.RADIX_API + "/" + path;
-            return [2 /*return*/, lib_default()(url, __assign(__assign({}, config), { headers: __assign(__assign({}, (config.headers || {})), { Authorization: "Bearer " + state.environment.RADIX_TOKEN }) }))];
-        });
+process.env.API_URL = process.env.API_URL || 'https://api.radix.equinor.com/api/v1';
+const util_radix = new dist.Radix(state_state.environment.RADIX_TOKEN);
+function callRadix(path, config = {}) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const url = `${state.environment.RADIX_API}/${path}`;
+        return fetch(url, Object.assign(Object.assign({}, config), { headers: Object.assign(Object.assign({}, (config.headers || {})), { Authorization: `Bearer ${state.environment.RADIX_TOKEN}` }) }));
     });
 }
 function log(message) {
+    if (message instanceof Array) {
+        message = message.join(' ');
+    }
     if (github.context.eventName) {
         core.info(message);
     }
@@ -73416,76 +74492,27 @@ var clean_radix_environments_awaiter = (undefined && undefined.__awaiter) || fun
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var clean_radix_environments_generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 
 
 function clearOrphans() {
-    return clean_radix_environments_awaiter(this, void 0, void 0, function () {
-        var app, url, environments, _i, environments_1, env, ex_1;
-        return clean_radix_environments_generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    app = state.options.app;
-                    url = "applications/" + app + "/environments";
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 7, , 8]);
-                    return [4 /*yield*/, util_callRadix(url).then(function (r) { return r.json(); })];
-                case 2:
-                    environments = _a.sent();
-                    if (state.options.debug) {
-                        log(JSON.stringify(environments, null, 2));
-                    }
-                    _i = 0, environments_1 = environments;
-                    _a.label = 3;
-                case 3:
-                    if (!(_i < environments_1.length)) return [3 /*break*/, 6];
-                    env = environments_1[_i];
-                    if (!(env.status === 'Orphan')) return [3 /*break*/, 5];
-                    console.log('Deleting radix env: ', env.name);
-                    return [4 /*yield*/, util_callRadix(url + "/" + env.name, {
-                            method: 'DELETE'
-                        })];
-                case 4:
-                    _a.sent();
-                    _a.label = 5;
-                case 5:
-                    _i++;
-                    return [3 /*break*/, 3];
-                case 6: return [3 /*break*/, 8];
-                case 7:
-                    ex_1 = _a.sent();
-                    console.error(ex_1);
-                    return [3 /*break*/, 8];
-                case 8: return [2 /*return*/, true];
+    return clean_radix_environments_awaiter(this, void 0, void 0, function* () {
+        const { app } = state_state.options;
+        try {
+            const environments = yield util_radix.environment().getEnvironmentSummary(app);
+            if (state_state.options.debug) {
+                log(JSON.stringify(environments, null, 2));
             }
-        });
+            for (let env of environments) {
+                if (env.status === 'Orphan') {
+                    log('Deleting radix env: ' + env.name);
+                    yield util_radix.environment().deleteEnvironment(app, env.name);
+                }
+            }
+        }
+        catch (ex) {
+            console.error(ex);
+        }
+        return true;
     });
 }
 
@@ -73497,17 +74524,6 @@ var external_fs_default = /*#__PURE__*/__nccwpck_require__.n(external_fs_);
 // EXTERNAL MODULE: external "util"
 var external_util_ = __nccwpck_require__(1669);
 ;// CONCATENATED MODULE: ./src/create-environment.ts
-var create_environment_assign = (undefined && undefined.__assign) || function () {
-    create_environment_assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return create_environment_assign.apply(this, arguments);
-};
 var create_environment_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -73517,173 +74533,87 @@ var create_environment_awaiter = (undefined && undefined.__awaiter) || function 
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var create_environment_generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 
 
 
 
 
-var readFile = (0,external_util_.promisify)((external_fs_default()).readFile);
-var writeFile = (0,external_util_.promisify)((external_fs_default()).writeFile);
+const readFile = (0,external_util_.promisify)((external_fs_default()).readFile);
+const writeFile = (0,external_util_.promisify)((external_fs_default()).writeFile);
 function createEnvironment() {
-    return create_environment_awaiter(this, void 0, void 0, function () {
-        var _a, env, copy, kubeEnvironmentRegex, envIsValid, buf, d, obj, _b;
-        return create_environment_generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    _a = state.options, env = _a.name, copy = _a.copy;
-                    kubeEnvironmentRegex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])$/;
-                    envIsValid = kubeEnvironmentRegex.test(env);
-                    if (!copy && !envIsValid) {
-                        throw new Error("Invalid environment name: " + env + " (must match pattern " + kubeEnvironmentRegex.source + ")");
-                    }
-                    return [4 /*yield*/, readFile(state.environment.RADIX_FILE)];
-                case 1:
-                    buf = _c.sent();
-                    d = buf.toString();
-                    obj = yaml.parse(d);
-                    if (obj.spec.environments.findIndex(function (e) { return e.name === env; }) >= 0) {
-                        console.log('Environment already exists');
-                        return [2 /*return*/];
-                    }
-                    if (!!copy) return [3 /*break*/, 3];
-                    obj.spec.environments.push({ name: env });
-                    _b = obj.spec;
-                    return [4 /*yield*/, getComponentConfig(obj.spec.components, env)];
-                case 2:
-                    _b.components = _c.sent();
-                    _c.label = 3;
-                case 3: return [4 /*yield*/, updateConfig(obj)];
-                case 4:
-                    _c.sent();
-                    return [2 /*return*/];
-            }
-        });
+    return create_environment_awaiter(this, void 0, void 0, function* () {
+        const { name: env, copy } = state_state.options;
+        const kubeEnvironmentRegex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])$/;
+        const envIsValid = kubeEnvironmentRegex.test(env);
+        if (!copy && !envIsValid) {
+            throw new Error(`Invalid environment name: ${env} (must match pattern ${kubeEnvironmentRegex.source})`);
+        }
+        const buf = yield readFile(state_state.environment.RADIX_FILE);
+        const d = buf.toString();
+        const obj = yaml.parse(d);
+        if (obj.spec.environments.findIndex(e => e.name === env) >= 0) {
+            console.log('Environment already exists');
+            return;
+        }
+        if (!copy) {
+            obj.spec.environments.push({ name: env });
+            obj.spec.components = yield getComponentConfig(obj.spec.components, env);
+        }
+        yield updateConfig(obj);
     });
 }
 function getComponentConfig(components, env) {
-    return create_environment_awaiter(this, void 0, void 0, function () {
-        var componentTemplate, str, _a, _i, components_1, comp, template, config, _b;
-        return create_environment_generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    _c.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, readFile(external_path_default().join(state.options.context, 'component-config.json')).then(function (b) { return b.toString(); })];
-                case 1:
-                    str = _c.sent();
-                    componentTemplate = JSON.parse(str);
-                    return [3 /*break*/, 3];
-                case 2:
-                    _a = _c.sent();
-                    componentTemplate = {};
-                    return [3 /*break*/, 3];
-                case 3:
-                    _i = 0, components_1 = components;
-                    _c.label = 4;
-                case 4:
-                    if (!(_i < components_1.length)) return [3 /*break*/, 7];
-                    comp = components_1[_i];
-                    template = componentTemplate[comp.name];
-                    config = create_environment_assign({}, template);
-                    config.environment = env;
-                    config.imageTagName = env;
-                    _b = config;
-                    return [4 /*yield*/, getVariables(comp.name, env)];
-                case 5:
-                    _b.variables = _c.sent();
-                    comp.environmentConfig.push(config);
-                    _c.label = 6;
-                case 6:
-                    _i++;
-                    return [3 /*break*/, 4];
-                case 7: return [2 /*return*/, components];
-            }
-        });
+    return create_environment_awaiter(this, void 0, void 0, function* () {
+        let componentTemplate;
+        try {
+            const str = yield readFile(external_path_default().join(state_state.options.context, 'component-config.json')).then((b) => b.toString());
+            componentTemplate = JSON.parse(str);
+        }
+        catch (_a) {
+            componentTemplate = {};
+        }
+        for (let comp of components) {
+            const template = componentTemplate[comp.name];
+            const config = Object.assign({}, template);
+            config.environment = env;
+            config.imageTagName = env;
+            config.variables = yield getVariables(comp.name, env);
+            comp.environmentConfig.push(config);
+        }
+        return components;
     });
 }
 function updateConfig(obj) {
-    return create_environment_awaiter(this, void 0, void 0, function () {
-        var doc, toYaml;
-        return create_environment_generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    doc = new yaml.Document();
-                    doc.setSchema();
-                    doc.contents = doc.schema.createNode(obj);
-                    toYaml = String(doc);
-                    return [4 /*yield*/, writeFile(state.environment.RADIX_FILE, toYaml, 'utf8')];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
+    return create_environment_awaiter(this, void 0, void 0, function* () {
+        const doc = new yaml.Document();
+        doc.setSchema();
+        doc.contents = doc.schema.createNode(obj);
+        const toYaml = String(doc);
+        yield writeFile(state_state.environment.RADIX_FILE, toYaml, 'utf8');
     });
 }
 function getVariables(component, env) {
-    return create_environment_awaiter(this, void 0, void 0, function () {
-        var file, json, variables;
-        return create_environment_generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, readFile(external_path_default().join(state.options.context, 'variables.json'))];
-                case 1:
-                    file = _a.sent();
-                    json = JSON.parse(file.toString());
-                    variables = json[component];
-                    if (!variables) {
-                        return [2 /*return*/, {}];
-                    }
-                    Object.keys(variables)
-                        .forEach(function (key) {
-                        variables[key] = variables[key].replace('{ENVIRONMENT}', env);
-                    });
-                    return [2 /*return*/, variables];
-            }
+    return create_environment_awaiter(this, void 0, void 0, function* () {
+        // Also use azure cli to update reply-url -> https://docs.microsoft.com/en-us/cli/azure/ad/app?view=azure-cli-latest#az_ad_app_update
+        const file = yield readFile(external_path_default().join(state_state.options.context, 'variables.json'));
+        const json = JSON.parse(file.toString());
+        const variables = json[component];
+        if (!variables) {
+            return {};
+        }
+        Object.keys(variables)
+            .forEach(key => {
+            variables[key] = variables[key].replace('{ENVIRONMENT}', env);
         });
+        return variables;
     });
 }
 
 // EXTERNAL MODULE: ./node_modules/@azure/identity/dist/index.js
-var dist = __nccwpck_require__(3084);
+var identity_dist = __nccwpck_require__(3084);
 // EXTERNAL MODULE: ./node_modules/@azure/container-registry/dist/index.js
 var container_registry_dist = __nccwpck_require__(3272);
 ;// CONCATENATED MODULE: ./src/teardown.ts
-var teardown_assign = (undefined && undefined.__assign) || function () {
-    teardown_assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return teardown_assign.apply(this, arguments);
-};
 var teardown_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -73692,33 +74622,6 @@ var teardown_awaiter = (undefined && undefined.__awaiter) || function (thisArg, 
         function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
-};
-var teardown_generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
 };
 var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
@@ -73734,149 +74637,81 @@ var __asyncValues = (undefined && undefined.__asyncValues) || function (o) {
 
 
 
-var teardown_readFile = (0,external_util_.promisify)((external_fs_default()).readFile);
-var teardown_writeFile = (0,external_util_.promisify)((external_fs_default()).writeFile);
+const teardown_readFile = (0,external_util_.promisify)((external_fs_default()).readFile);
+const teardown_writeFile = (0,external_util_.promisify)((external_fs_default()).writeFile);
 function teardownEnvironment() {
-    return teardown_awaiter(this, void 0, void 0, function () {
-        var env, kubeEnvironmentRegex, envIsValid, buf, d, obj, _a;
-        return teardown_generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    env = state.options.name;
-                    kubeEnvironmentRegex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])$/;
-                    envIsValid = kubeEnvironmentRegex.test(env);
-                    if (!envIsValid) {
-                        throw new Error("Invalid environment name: " + env + " (must match pattern " + kubeEnvironmentRegex.source + ")");
-                    }
-                    return [4 /*yield*/, teardown_readFile(state.environment.RADIX_FILE)];
-                case 1:
-                    buf = _b.sent();
-                    d = buf.toString();
-                    obj = yaml.parse(d);
-                    obj.spec.environments = obj.spec.environments.filter(function (e) { return e.name !== env; });
-                    obj.spec.components = obj.spec.components.map(function (comp) {
-                        var environmentConfig = comp.environmentConfig.filter(function (e) { return e.environment !== env; });
-                        return teardown_assign(teardown_assign({}, comp), { environmentConfig: environmentConfig });
-                    });
-                    _b.label = 2;
-                case 2:
-                    _b.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, deleteImageTags(env)];
-                case 3:
-                    _b.sent();
-                    return [3 /*break*/, 5];
-                case 4:
-                    _a = _b.sent();
-                    return [3 /*break*/, 5];
-                case 5: 
-                // Wont work - radix requires removing in .yml first.
-                // await teardownInRadix(env, appName);
-                return [4 /*yield*/, teardown_updateConfig(obj)];
-                case 6:
-                    // Wont work - radix requires removing in .yml first.
-                    // await teardownInRadix(env, appName);
-                    _b.sent();
-                    return [2 /*return*/];
-            }
+    return teardown_awaiter(this, void 0, void 0, function* () {
+        const { name: env } = state_state.options;
+        const kubeEnvironmentRegex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])$/;
+        const envIsValid = kubeEnvironmentRegex.test(env);
+        if (!envIsValid) {
+            throw new Error(`Invalid environment name: ${env} (must match pattern ${kubeEnvironmentRegex.source})`);
+        }
+        const buf = yield teardown_readFile(state_state.environment.RADIX_FILE);
+        const d = buf.toString();
+        const obj = yaml.parse(d);
+        obj.spec.environments = obj.spec.environments.filter(e => e.name !== env);
+        obj.spec.components = obj.spec.components.map(comp => {
+            const environmentConfig = comp.environmentConfig.filter(e => e.environment !== env);
+            return Object.assign(Object.assign({}, comp), { environmentConfig });
         });
+        try {
+            yield deleteImageTags(env);
+        }
+        catch (_a) { }
+        // Wont work - radix requires removing in .yml first.
+        // await teardownInRadix(env, appName);
+        yield teardown_updateConfig(obj);
     });
 }
 function deleteImageTags(env) {
     var e_1, _a;
-    return teardown_awaiter(this, void 0, void 0, function () {
-        var endpoint, client, iterator, iterator_1, iterator_1_1, repository, repoClient, props, _b, e_1_1;
-        return teardown_generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    if (!state.options.registry) {
-                        return [2 /*return*/];
-                    }
-                    endpoint = "https://" + state.options.registry;
-                    client = new container_registry_dist/* ContainerRegistryClient */.FH(endpoint, new dist/* DefaultAzureCredential */.y0());
-                    iterator = client.listRepositories();
-                    _c.label = 1;
-                case 1:
-                    _c.trys.push([1, 11, 12, 17]);
-                    iterator_1 = __asyncValues(iterator);
-                    _c.label = 2;
-                case 2: return [4 /*yield*/, iterator_1.next()];
-                case 3:
-                    if (!(iterator_1_1 = _c.sent(), !iterator_1_1.done)) return [3 /*break*/, 10];
-                    repository = iterator_1_1.value;
-                    repoClient = client.getRepositoryClient(repository);
-                    props = void 0;
-                    _c.label = 4;
-                case 4:
-                    _c.trys.push([4, 6, , 7]);
-                    return [4 /*yield*/, repoClient.getTagProperties(env)];
-                case 5:
-                    props = _c.sent();
-                    return [3 /*break*/, 7];
-                case 6:
-                    _b = _c.sent();
-                    return [3 /*break*/, 7];
-                case 7:
-                    if (!(props && props.writeableProperties.canDelete)) return [3 /*break*/, 9];
-                    return [4 /*yield*/, repoClient.deleteTag(env)];
-                case 8:
-                    _c.sent();
-                    console.log("Deleted " + props.repository + "/" + props.name);
-                    _c.label = 9;
-                case 9: return [3 /*break*/, 2];
-                case 10: return [3 /*break*/, 17];
-                case 11:
-                    e_1_1 = _c.sent();
-                    e_1 = { error: e_1_1 };
-                    return [3 /*break*/, 17];
-                case 12:
-                    _c.trys.push([12, , 15, 16]);
-                    if (!(iterator_1_1 && !iterator_1_1.done && (_a = iterator_1["return"]))) return [3 /*break*/, 14];
-                    return [4 /*yield*/, _a.call(iterator_1)];
-                case 13:
-                    _c.sent();
-                    _c.label = 14;
-                case 14: return [3 /*break*/, 16];
-                case 15:
-                    if (e_1) throw e_1.error;
-                    return [7 /*endfinally*/];
-                case 16: return [7 /*endfinally*/];
-                case 17: return [2 /*return*/];
+    return teardown_awaiter(this, void 0, void 0, function* () {
+        if (!state_state.options.registry) {
+            return;
+        }
+        const endpoint = `https://${state_state.options.registry}`;
+        // Create a ContainerRegistryClient that will authenticate through Active Directory
+        const client = new container_registry_dist/* ContainerRegistryClient */.FH(endpoint, new identity_dist/* DefaultAzureCredential */.y0());
+        const iterator = client.listRepositories();
+        try {
+            for (var iterator_1 = __asyncValues(iterator), iterator_1_1; iterator_1_1 = yield iterator_1.next(), !iterator_1_1.done;) {
+                const repository = iterator_1_1.value;
+                const repoClient = client.getRepositoryClient(repository);
+                let props;
+                try {
+                    props = yield repoClient.getTagProperties(env);
+                }
+                catch (_b) { }
+                if (props && props.writeableProperties.canDelete) {
+                    yield repoClient.deleteTag(env);
+                    console.log(`Deleted ${props.repository}/${props.name}`);
+                }
             }
-        });
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (iterator_1_1 && !iterator_1_1.done && (_a = iterator_1.return)) yield _a.call(iterator_1);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
     });
 }
 function teardownInRadix(env, appName) {
-    return teardown_awaiter(this, void 0, void 0, function () {
-        var status;
-        return teardown_generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, callRadix("/applications/" + appName + "/environments/" + env, {
-                        method: 'DELETE'
-                    }).then(function (r) { return r.status; })];
-                case 1:
-                    status = _a.sent();
-                    console.log(status);
-                    return [2 /*return*/];
-            }
-        });
+    return teardown_awaiter(this, void 0, void 0, function* () {
+        const status = yield radix.environment().deleteEnvironment(appName, env)
+            .then(r => r.status);
+        console.log(status);
     });
 }
 function teardown_updateConfig(obj) {
-    return teardown_awaiter(this, void 0, void 0, function () {
-        var doc, toYaml;
-        return teardown_generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    doc = new yaml.Document();
-                    doc.setSchema();
-                    doc.contents = doc.schema.createNode(obj);
-                    toYaml = String(doc);
-                    return [4 /*yield*/, teardown_writeFile(state.environment.RADIX_FILE, toYaml, 'utf8')];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
+    return teardown_awaiter(this, void 0, void 0, function* () {
+        const doc = new yaml.Document();
+        doc.setSchema();
+        doc.contents = doc.schema.createNode(obj);
+        const toYaml = String(doc);
+        yield teardown_writeFile(state_state.environment.RADIX_FILE, toYaml, 'utf8');
     });
 }
 
@@ -73892,33 +74727,6 @@ var update_secrets_awaiter = (undefined && undefined.__awaiter) || function (thi
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var update_secrets_generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 
 
 
@@ -73928,181 +74736,92 @@ var update_secrets_generator = (undefined && undefined.__generator) || function 
 
 
 
-var update_secrets_readFile = (0,external_util_.promisify)((external_fs_default()).readFile);
-var appName;
-var env;
+const update_secrets_readFile = (0,external_util_.promisify)((external_fs_default()).readFile);
+let appName;
+let env;
 function setSecrets() {
-    return update_secrets_awaiter(this, void 0, void 0, function () {
-        var _a, vault, environment, buf, yml, radixConfig, url, credential, client, _i, _b, c;
-        return update_secrets_generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    _a = state.options, vault = _a.vault, environment = _a.name;
-                    return [4 /*yield*/, update_secrets_readFile(state.environment.RADIX_FILE)];
-                case 1:
-                    buf = _c.sent();
-                    yml = buf.toString();
-                    radixConfig = yaml.parse(yml);
-                    appName = radixConfig.metadata.name;
-                    env = environment;
-                    url = "https://" + vault + ".vault.azure.net";
-                    credential = new dist/* DefaultAzureCredential */.y0();
-                    client = new keyvault_secrets_dist/* SecretClient */.rx(url, credential);
-                    _i = 0, _b = radixConfig.spec.components;
-                    _c.label = 2;
-                case 2:
-                    if (!(_i < _b.length)) return [3 /*break*/, 5];
-                    c = _b[_i];
-                    return [4 /*yield*/, setSecretsForComponent(c.name, client, c.secrets)];
-                case 3:
-                    _c.sent();
-                    _c.label = 4;
-                case 4:
-                    _i++;
-                    return [3 /*break*/, 2];
-                case 5: return [2 /*return*/];
-            }
-        });
+    return update_secrets_awaiter(this, void 0, void 0, function* () {
+        const { vault, name: environment } = state_state.options;
+        const buf = yield update_secrets_readFile(state_state.environment.RADIX_FILE);
+        const yml = buf.toString();
+        const radixConfig = yaml.parse(yml, { prettyErrors: true });
+        appName = radixConfig.metadata.name;
+        env = environment;
+        // Build the URL to reach your key vault
+        const url = `https://${vault}.vault.azure.net`;
+        // Lastly, create our secrets client and connect to the service
+        const credential = new identity_dist/* DefaultAzureCredential */.y0();
+        const client = new keyvault_secrets_dist/* SecretClient */.rx(url, credential);
+        for (let c of radixConfig.spec.components) {
+            yield setSecretsForComponent(c.name, client, c.secrets);
+        }
     });
 }
-function setSecretsForComponent(component, client, secrets) {
-    if (secrets === void 0) { secrets = []; }
-    return update_secrets_awaiter(this, void 0, void 0, function () {
-        var secretVaultMapping, secretMap, _i, secrets_1, name_1, value, _a, _b, k, val;
-        return update_secrets_generator(this, function (_c) {
-            switch (_c.label) {
-                case 0: return [4 /*yield*/, update_secrets_readFile(external_path_default().join(state.options.context, './secret-map.json'))
-                        .then(function (r) { return r.toString(); })
-                        .then(function (str) { return JSON.parse(str); })
-                        .then(function (obj) { return obj[component]; })];
-                case 1:
-                    secretVaultMapping = (_c.sent()) || {};
-                    secretMap = new Map();
-                    return [4 /*yield*/, waitForEnvironment()];
-                case 2:
-                    _c.sent();
-                    _i = 0, secrets_1 = secrets;
-                    _c.label = 3;
-                case 3:
-                    if (!(_i < secrets_1.length)) return [3 /*break*/, 6];
-                    name_1 = secrets_1[_i];
-                    return [4 /*yield*/, loadSecret(secretVaultMapping[name_1] || name_1, client)];
-                case 4:
-                    value = _c.sent();
-                    secretMap.set(name_1, value);
-                    _c.label = 5;
-                case 5:
-                    _i++;
-                    return [3 /*break*/, 3];
-                case 6:
-                    _a = 0, _b = Array.from(secretMap.keys());
-                    _c.label = 7;
-                case 7:
-                    if (!(_a < _b.length)) return [3 /*break*/, 10];
-                    k = _b[_a];
-                    val = secretMap.get(k);
-                    return [4 /*yield*/, updateRadixSecret(component, k, val)];
-                case 8:
-                    _c.sent();
-                    _c.label = 9;
-                case 9:
-                    _a++;
-                    return [3 /*break*/, 7];
-                case 10: return [2 /*return*/];
-            }
-        });
+function setSecretsForComponent(component, client, secrets = []) {
+    return update_secrets_awaiter(this, void 0, void 0, function* () {
+        const secretVaultMapping = (yield update_secrets_readFile(external_path_default().join(state_state.options.context, './secret-map.json'))
+            .then(r => r.toString())
+            .then(str => JSON.parse(str))
+            .then(obj => obj[component])) || {};
+        const secretMap = new Map();
+        for (let name of secrets) {
+            const value = yield loadSecret(secretVaultMapping[name] || name, client);
+            secretMap.set(name, value);
+        }
+        for (const k of Array.from(secretMap.keys())) {
+            const val = secretMap.get(k);
+            yield updateRadixSecret(component, k, val);
+        }
     });
 }
 function updateRadixSecret(component, secretName, secretValue) {
-    return update_secrets_awaiter(this, void 0, void 0, function () {
-        var url, payload, res, status, error;
-        return update_secrets_generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    url = "applications/" + appName + "/environments/" + env + "/components/" + component + "/secrets/" + secretName;
-                    payload = { secretValue: secretValue };
-                    return [4 /*yield*/, util_callRadix(url, {
-                            method: 'PUT',
-                            body: JSON.stringify(payload)
-                        })];
-                case 1:
-                    res = _a.sent();
-                    status = res.status;
-                    if (status >= 200 && status < 400) {
-                        return [2 /*return*/, true];
-                    }
-                    return [4 /*yield*/, res.text()];
-                case 2:
-                    error = _a.sent();
-                    console.error("Failed to update secret " + secretName + ": " + error);
-                    return [2 /*return*/, false];
-            }
-        });
+    return update_secrets_awaiter(this, void 0, void 0, function* () {
+        const res = yield util_radix.environment().changeEnvironmentComponentSecret(appName, env, component, secretName, { secretValue });
+        const status = res.status;
+        if (status >= 200 && status < 400) {
+            return true;
+        }
+        const error = yield res.text();
+        console.error(`Failed to update secret ${secretName}: ${error}`);
+        return false;
     });
 }
 function loadSecret(query, client) {
-    return update_secrets_awaiter(this, void 0, void 0, function () {
-        var value, secret, ex_1;
-        return update_secrets_generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, client.getSecret(query)];
-                case 1:
-                    secret = _a.sent();
-                    value = secret.value;
-                    return [3 /*break*/, 3];
-                case 2:
-                    ex_1 = _a.sent();
-                    core.setFailed("Failed to load secret " + query + " from az kv: " + ex_1);
-                    process.exit(0);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/, value];
-            }
-        });
+    return update_secrets_awaiter(this, void 0, void 0, function* () {
+        let value;
+        try {
+            const secret = yield client.getSecret(query);
+            value = secret.value;
+        }
+        catch (ex) {
+            core.setFailed(`Failed to load secret ${query} from az kv: ${ex}`);
+            process.exit(0);
+        }
+        return value;
     });
 }
-var attempts = 0;
+let attempts = 0;
 // Function to ensure we wait until the radix environment is created before proceeding. Default wait is 10 ms.
-function waitForEnvironment(wait) {
-    if (wait === void 0) { wait = 10; }
-    return update_secrets_awaiter(this, void 0, void 0, function () {
-        var url, statusCode;
-        return update_secrets_generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    url = "applications/" + appName + "/environments/" + env;
-                    return [4 /*yield*/, delay(wait)];
-                case 1:
-                    _a.sent();
-                    return [4 /*yield*/, util_callRadix(url).then(function (r) { return r.status; })];
-                case 2:
-                    statusCode = _a.sent();
-                    if (statusCode === 404) {
-                        if (attempts > 12) {
-                            throw new Error('Radix environment took more than 120 seconds to create, bailing.');
-                        }
-                        attempts = attempts + 1;
-                        return [2 /*return*/, waitForEnvironment(10000)];
-                    }
-                    return [2 /*return*/, true];
+function waitForEnvironment(wait = 10) {
+    return update_secrets_awaiter(this, void 0, void 0, function* () {
+        yield delay(wait);
+        try {
+            yield radix.environment().getEnvironment(appName, env);
+        }
+        catch (_a) {
+            if (attempts > 12) {
+                throw new Error('Radix environment took more than 120 seconds to create, bailing.');
             }
-        });
+            else {
+                attempts = attempts + 1;
+                return waitForEnvironment(10000);
+            }
+        }
+        return true;
     });
 }
 
 ;// CONCATENATED MODULE: ./index.ts
-var index_assign = (undefined && undefined.__assign) || function () {
-    index_assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return index_assign.apply(this, arguments);
-};
 var index_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -74112,33 +74831,6 @@ var index_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _ar
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var index_generator = (undefined && undefined.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 
 
 
@@ -74148,57 +74840,61 @@ var index_generator = (undefined && undefined.__generator) || function (thisArg,
 
 
 
-var program = (commander_default()).program;
+
+const program = (commander_default()).program;
 program.version('0.0.1');
 program
     .option('-d, --debug', 'Print debug info')
     .option('--create-environment', 'Create radix environment')
     .option('--update-secrets', 'Update RADIX secrets')
     .option('--teardown', 'Tear down environment')
+    .option('--check-environment', 'Check if environment exists')
     .option('--clear-orphans', 'Delete orphaned environments')
     .option('-c, --copy', 'Copy template to radix-config', false)
     .option('-v, --vault <vaultName>', 'Vault to load secrets from', 'gom-kv-dev')
-    .option('-n, --name <envName>', 'Name of environment', "")
+    .option('-n, --name <envName>', 'Name of environment', ``)
     .option('-a, --app <appName>', 'Name of application')
     .option('-c, --context <context>', 'Helper-file location', '.');
 program.parse(process.argv);
-(function () { return index_awaiter(void 0, void 0, void 0, function () {
-    var options;
-    return index_generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                setState(program.opts());
-                options = state.options;
-                if (!options.createEnvironment) return [3 /*break*/, 2];
-                return [4 /*yield*/, createEnvironment()];
-            case 1:
-                _a.sent();
-                return [3 /*break*/, 8];
-            case 2:
-                if (!options.updateSecrets) return [3 /*break*/, 4];
-                return [4 /*yield*/, setSecrets()];
-            case 3:
-                _a.sent();
-                return [3 /*break*/, 8];
-            case 4:
-                if (!options.teardown) return [3 /*break*/, 6];
-                return [4 /*yield*/, teardownEnvironment()];
-            case 5:
-                _a.sent();
-                return [3 /*break*/, 8];
-            case 6:
-                if (!options.clearOrphans) return [3 /*break*/, 8];
-                return [4 /*yield*/, clearOrphans()];
-            case 7:
-                _a.sent();
-                _a.label = 8;
-            case 8: return [2 /*return*/];
+(() => index_awaiter(void 0, void 0, void 0, function* () {
+    setState(program.opts());
+    const options = state_state.options;
+    if (options.createEnvironment) {
+        yield createEnvironment();
+    }
+    else if (options.updateSecrets) {
+        yield setSecrets();
+    }
+    else if (options.teardown) {
+        yield teardownEnvironment();
+    }
+    else if (options.clearOrphans) {
+        yield clearOrphans();
+    }
+    else if (options.checkEnvironment) {
+        try {
+            const res = yield util_radix.environment().getEnvironment(options.app, options.name);
+            if (res.status !== 'Orphan') {
+                core.setOutput('exists', true);
+            }
+            else {
+                core.setOutput('exists', false);
+            }
         }
-    });
-}); })();
+        catch (err) {
+            const ex = err;
+            if (ex.status === 404) {
+                core.setOutput('exists', false);
+            }
+            else {
+                core.setFailed(`Invalid response from Radix, expected 20x or 404, got ${ex.status}`);
+            }
+        }
+    }
+}))();
 function parseGithub() {
     var _a;
-    var opts = {};
+    const opts = {};
     try {
         opts.vault = core.getInput('vault');
         opts.debug = !!core.getInput('debug');
@@ -74219,8 +74915,11 @@ function parseGithub() {
             case 'clear-orphans':
                 opts.clearOrphans = true;
                 break;
+            case 'check-environment':
+                opts.checkEnvironment = true;
+                break;
             default:
-                core.setFailed('No valid action supplied, must be create | teardown | update-secrets | clear-orphans');
+                core.setFailed('No valid action supplied, must be create | teardown | update-secrets | clear-orphans | check-environment');
                 process.exit();
         }
     }
@@ -74232,17 +74931,17 @@ function parseGithub() {
 }
 function setState(opts) {
     if (typeof github.context.eventName !== 'undefined') {
-        state.options = parseGithub();
+        state_state.options = parseGithub();
     }
     else {
-        state.options = opts;
+        state_state.options = opts;
     }
-    var workSpace = process.env.GITHUB_WORKSPACE || process.cwd();
-    var RADIX_FILE = external_path_default().join(workSpace, 'radixconfig.yaml');
-    state.environment = index_assign(index_assign(index_assign({}, state.environment), process.env), { RADIX_FILE: RADIX_FILE });
-    Object.freeze(state);
-    if (state.options.debug) {
-        console.log(JSON.stringify(state, null, 2));
+    const workSpace = process.env.GITHUB_WORKSPACE || process.cwd();
+    const RADIX_FILE = external_path_default().join(workSpace, 'radixconfig.yaml');
+    state_state.environment = Object.assign(Object.assign(Object.assign({}, state_state.environment), process.env), { RADIX_FILE });
+    Object.freeze(state_state);
+    if (state_state.options.debug) {
+        console.log(JSON.stringify(state_state, null, 2));
     }
 }
 

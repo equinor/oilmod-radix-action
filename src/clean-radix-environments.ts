@@ -1,21 +1,17 @@
-import { ApiEnvironment } from "./radix-config";
 import { state } from "./state";
-import { callRadix, log } from './util';
+import { log, radix } from './util';
 
 export async function clearOrphans() {
     const { app } = state.options;
-    const url = `applications/${app}/environments`;
     try {
-        const environments = await callRadix(url).then(r => r.json()) as ApiEnvironment[];
+        const environments = await radix.environment().getEnvironmentSummary(app);
         if (state.options.debug) {
             log(JSON.stringify(environments, null, 2));
         }
         for (let env of environments) {
             if (env.status === 'Orphan') {
-                console.log('Deleting radix env: ', env.name);
-                await callRadix(`${url}/${env.name}`, {
-                    method: 'DELETE'
-                });
+                log('Deleting radix env: ' + env.name);
+                await radix.environment().deleteEnvironment(app, env.name);
             }
         }
     } catch (ex) {
