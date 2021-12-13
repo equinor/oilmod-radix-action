@@ -34069,6 +34069,7 @@ class EnvironmentImpl {
       @param {@link SecretParameters} componentSecret New secret value
     */
     changeEnvironmentComponentSecret(appName, envName, componentName, secretName, componentSecret) {
+        console.log(appName, envName);
         return node_fetch_1.default(`${process.env.API_URL}/applications/${appName}/environments/${envName}/components/${componentName}/secrets/${secretName}`, {
             method: 'PUT',
             headers: {
@@ -74766,7 +74767,15 @@ function setSecretsForComponent(component, client, secrets = []) {
             .then(obj => obj[component])) || {};
         const secretMap = new Map();
         for (let name of secrets) {
-            const value = yield loadSecret(secretVaultMapping[name] || name, client);
+            let value;
+            try {
+                value = yield loadSecret(secretVaultMapping[name] || name, client);
+            }
+            catch (ex) {
+                core.warning(`${secretVaultMapping[name] || name} not found in keyvault, setting fallback value. Exception below.`);
+                core.warning(ex);
+                value = 'FALLBACK_SECRET';
+            }
             secretMap.set(name, value);
         }
         for (const k of Array.from(secretMap.keys())) {

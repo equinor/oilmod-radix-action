@@ -42,7 +42,14 @@ async function setSecretsForComponent(component: string, client: SecretClient, s
     const secretMap = new Map();
 
     for (let name of secrets) {
-        const value = await loadSecret(secretVaultMapping[name] || name, client);
+        let value: string;
+        try {
+            value = await loadSecret(secretVaultMapping[name] || name, client);
+        } catch (ex) {
+            core.warning(`${secretVaultMapping[name] || name} not found in keyvault, setting fallback value. Exception below.`)
+            core.warning(ex)
+            value = 'FALLBACK_SECRET';
+        }
         secretMap.set(name, value);
     }
     for (const k of Array.from(secretMap.keys())) {
