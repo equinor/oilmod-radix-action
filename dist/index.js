@@ -74804,8 +74804,9 @@ function loadSecret(query, client) {
             value = secret.value;
         }
         catch (ex) {
-            core.setFailed(`Failed to load secret ${query} from az kv: ${ex}`);
-            process.exit(0);
+            core.warning(`Failed to load secret ${query} from az kv: ${ex}`);
+            core.warning('Setting fallback secret value = FALLBACK');
+            value = 'FALLBACK';
         }
         return value;
     });
