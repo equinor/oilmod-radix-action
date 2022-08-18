@@ -5,7 +5,7 @@
         "build:watch": "ncc build --watch index.ts --license licenses.txt"
     },
     "dependencies": {
-        "@actions/core": "^1.2.7",
+        "@actions/core": "^1.9.1",
         "@actions/github": "^4.0.0",
         "@azure/container-registry": "^1.0.0-beta.1",
         "@azure/identity": "^1.3.0",
