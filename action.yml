@@ -27,5 +27,5 @@ outputs:
   exists: # id of output
     description: 'Prints if check-environment is ran. Returns true or false'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
