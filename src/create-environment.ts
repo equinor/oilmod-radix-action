@@ -9,7 +9,7 @@ const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
 export async function createEnvironment() {
-    const {name: env, copy} = state.options;
+    const {name: env, copy, branch} = state.options;
     const kubeEnvironmentRegex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])$/;
     const envIsValid = kubeEnvironmentRegex.test(env);
     if (!copy && !envIsValid) {
@@ -23,7 +23,11 @@ export async function createEnvironment() {
         return;
     }
     if (!copy) {
-        obj.spec.environments.push({ name: env });
+        let envConfig: {name: string; branch?: string} = {name: env};
+        if (branch) {
+            envConfig = {...envConfig, branch};
+        }
+        obj.spec.environments.push(envConfig);
         obj.spec.components = await getComponentConfig(obj.spec.components, env);
     }
 

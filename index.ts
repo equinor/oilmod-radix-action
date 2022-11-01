@@ -18,6 +18,7 @@ program.version('0.0.1');
 program
   .option('-d, --debug', 'Print debug info')
   .option('--create-environment', 'Create radix environment')
+  .option('--branch <branchName>', 'Build from branch (optional)')
   .option('--update-secrets', 'Update RADIX secrets')
   .option('--teardown', 'Tear down environment')
   .option('--check-environment', 'Check if environment exists')
@@ -71,6 +72,7 @@ function parseGithub(): Options {
     opts.app = core.getInput('app');
     opts.registry = core.getInput('registry');
     opts.context = core.getInput('context');
+    opts.branch = core.getInput('branch');
     switch ( core.getInput('action') ) {
       case 'create':
         opts.createEnvironment = true;

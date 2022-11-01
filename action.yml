@@ -13,6 +13,9 @@ inputs:
   vault:
     description: 'Name of the keyvault you want to fetch secrets from (required if action = update-secrets)'
     required: false
+  branch:
+    description: 'Name of branch to build from'
+    required: false
   registry:
     description: 'Name of the container registry (required to perform teardown)'
     required: false
