@@ -27,6 +27,16 @@ export async function setSecrets() {
     // Lastly, create our secrets client and connect to the service
     const credential = new DefaultAzureCredential();
     const client = new SecretClient(url, credential);
+    let hasSecretFile: boolean;
+    try {
+        await readFile(path.join(state.options.context, './secret-map.json'));
+        hasSecretFile = true;
+    } catch {
+        hasSecretFile = false;
+    }
+    if (!hasSecretFile) {
+        return;
+    }
     for (let c of radixConfig.spec.components) {
         await setSecretsForComponent(c.name, client, c.secrets);
     }

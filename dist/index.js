@@ -74604,7 +74604,13 @@ function updateConfig(obj) {
 function getVariables(component, env) {
     return create_environment_awaiter(this, void 0, void 0, function* () {
         // Also use azure cli to update reply-url -> https://docs.microsoft.com/en-us/cli/azure/ad/app?view=azure-cli-latest#az_ad_app_update
-        const file = yield readFile(external_path_default().join(state_state.options.context, 'variables.json'));
+        let file;
+        try {
+            file = (yield readFile(external_path_default().join(state_state.options.context, 'variables.json')));
+        }
+        catch (_a) {
+            return {};
+        }
         const json = JSON.parse(file.toString());
         const variables = json[component];
         if (!variables) {
@@ -74761,6 +74767,17 @@ function setSecrets() {
         // Lastly, create our secrets client and connect to the service
         const credential = new identity_dist/* DefaultAzureCredential */.y0();
         const client = new keyvault_secrets_dist/* SecretClient */.rx(url, credential);
+        let hasSecretFile;
+        try {
+            yield update_secrets_readFile(external_path_default().join(state_state.options.context, './secret-map.json'));
+            hasSecretFile = true;
+        }
+        catch (_a) {
+            hasSecretFile = false;
+        }
+        if (!hasSecretFile) {
+            return;
+        }
         for (let c of radixConfig.spec.components) {
             yield setSecretsForComponent(c.name, client, c.secrets);
         }

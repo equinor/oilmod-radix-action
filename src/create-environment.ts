@@ -66,7 +66,12 @@ async function updateConfig(obj: RadixConfig) {
 
 async function getVariables(component: string, env: string): Promise<Variables> {
     // Also use azure cli to update reply-url -> https://docs.microsoft.com/en-us/cli/azure/ad/app?view=azure-cli-latest#az_ad_app_update
-    const file = await readFile(path.join(state.options.context, 'variables.json')) as Buffer;
+    let file: Buffer;
+    try {
+        file = await readFile(path.join(state.options.context, 'variables.json')) as Buffer;
+    } catch {
+        return {};
+    }
     const json = JSON.parse(file.toString());
     const variables: Variables = json[component];
     if (!variables) {
