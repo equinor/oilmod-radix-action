@@ -74561,15 +74561,15 @@ function createEnvironment() {
         if (!copy) {
             let envConfig = { name: env };
             if (branch) {
-                envConfig = Object.assign(Object.assign({}, envConfig), { branch });
+                envConfig = Object.assign(Object.assign({}, envConfig), { build: { from: branch } });
             }
             obj.spec.environments.push(envConfig);
-            obj.spec.components = yield getComponentConfig(obj.spec.components, env);
+            obj.spec.components = yield getComponentConfig(obj.spec.components, env, branch);
         }
         yield updateConfig(obj);
     });
 }
-function getComponentConfig(components, env) {
+function getComponentConfig(components, env, branch) {
     return create_environment_awaiter(this, void 0, void 0, function* () {
         let componentTemplate;
         try {
@@ -74583,7 +74583,7 @@ function getComponentConfig(components, env) {
             const template = componentTemplate[comp.name];
             const config = Object.assign({}, template);
             config.environment = env;
-            if (!state_state.options.branch) {
+            if (!branch) {
                 config.imageTagName = env;
             }
             config.variables = yield getVariables(comp.name, env);

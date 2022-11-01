@@ -23,18 +23,18 @@ export async function createEnvironment() {
         return;
     }
     if (!copy) {
-        let envConfig: {name: string; branch?: string} = {name: env};
+        let envConfig: {name: string; build?: {from: string}} = {name: env};
         if (branch) {
-            envConfig = {...envConfig, branch};
+            envConfig = {...envConfig, build: { from: branch } };
         }
         obj.spec.environments.push(envConfig);
-        obj.spec.components = await getComponentConfig(obj.spec.components, env);
+        obj.spec.components = await getComponentConfig(obj.spec.components, env, branch);
     }
 
     await updateConfig(obj);
 }
 
-async function getComponentConfig(components: Component[], env: string) {
+async function getComponentConfig(components: Component[], env: string, branch?: string) {
     let componentTemplate: {[compName: string]: EnvironmentConfig};
     try {
         const str = await readFile(path.join(state.options.context, 'component-config.json')).then((b) => b.toString());
@@ -46,7 +46,7 @@ async function getComponentConfig(components: Component[], env: string) {
         const template = componentTemplate[comp.name];
         const config = { ...template };
         config.environment = env;
-        if (!state.options.branch) {
+        if (!branch) {
             config.imageTagName = env;
         }
         config.variables = await getVariables(comp.name, env);
