@@ -74427,7 +74427,8 @@ const state_state = {
         name: '',
         app: '',
         registry: '',
-        context: ''
+        context: '',
+        branch: null
     },
     environment: {
         RADIX_API: `https://api.radix.equinor.com/api/v1`,
@@ -74544,7 +74545,7 @@ const readFile = (0,external_util_.promisify)((external_fs_default()).readFile);
 const writeFile = (0,external_util_.promisify)((external_fs_default()).writeFile);
 function createEnvironment() {
     return create_environment_awaiter(this, void 0, void 0, function* () {
-        const { name: env, copy } = state_state.options;
+        const { name: env, copy, branch } = state_state.options;
         const kubeEnvironmentRegex = /^[a-z0-9]([-a-z0-9]*[a-z0-9])$/;
         const envIsValid = kubeEnvironmentRegex.test(env);
         if (!copy && !envIsValid) {
@@ -74558,7 +74559,11 @@ function createEnvironment() {
             return;
         }
         if (!copy) {
-            obj.spec.environments.push({ name: env });
+            let envConfig = { name: env };
+            if (branch) {
+                envConfig = Object.assign(Object.assign({}, envConfig), { branch });
+            }
+            obj.spec.environments.push(envConfig);
             obj.spec.components = yield getComponentConfig(obj.spec.components, env);
         }
         yield updateConfig(obj);
@@ -74578,7 +74583,9 @@ function getComponentConfig(components, env) {
             const template = componentTemplate[comp.name];
             const config = Object.assign({}, template);
             config.environment = env;
-            config.imageTagName = env;
+            if (!state_state.options.branch) {
+                config.imageTagName = env;
+            }
             config.variables = yield getVariables(comp.name, env);
             comp.environmentConfig.push(config);
         }
@@ -74857,6 +74864,7 @@ program.version('0.0.1');
 program
     .option('-d, --debug', 'Print debug info')
     .option('--create-environment', 'Create radix environment')
+    .option('--branch <branchName>', 'Build from branch (optional)')
     .option('--update-secrets', 'Update RADIX secrets')
     .option('--teardown', 'Tear down environment')
     .option('--check-environment', 'Check if environment exists')
@@ -74914,6 +74922,7 @@ function parseGithub() {
         opts.app = core.getInput('app');
         opts.registry = core.getInput('registry');
         opts.context = core.getInput('context');
+        opts.branch = core.getInput('branch');
         switch (core.getInput('action')) {
             case 'create':
                 opts.createEnvironment = true;
