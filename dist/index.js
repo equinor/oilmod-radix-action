@@ -74768,16 +74768,6 @@ function setSecrets() {
         const credential = new identity_dist/* DefaultAzureCredential */.y0();
         const client = new keyvault_secrets_dist/* SecretClient */.rx(url, credential);
         let hasSecretFile;
-        try {
-            yield update_secrets_readFile(external_path_default().join(state_state.options.context, './secret-map.json'));
-            hasSecretFile = true;
-        }
-        catch (_a) {
-            hasSecretFile = false;
-        }
-        if (!hasSecretFile) {
-            return;
-        }
         for (let c of radixConfig.spec.components) {
             yield setSecretsForComponent(c.name, client, c.secrets);
         }
@@ -74785,10 +74775,15 @@ function setSecrets() {
 }
 function setSecretsForComponent(component, client, secrets = []) {
     return update_secrets_awaiter(this, void 0, void 0, function* () {
-        const secretVaultMapping = (yield update_secrets_readFile(external_path_default().join(state_state.options.context, './secret-map.json'))
-            .then(r => r.toString())
-            .then(str => JSON.parse(str))
-            .then(obj => obj[component])) || {};
+        let secretVaultMapping = {};
+        try {
+            const file = yield update_secrets_readFile(external_path_default().join(state_state.options.context, './secret-map.json'));
+            const json = JSON.parse(file.toString());
+            secretVaultMapping = json[component] || {};
+        }
+        catch (_a) {
+            secretVaultMapping = {};
+        }
         const secretMap = new Map();
         for (let name of secrets) {
             let value;

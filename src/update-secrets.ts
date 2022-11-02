@@ -28,26 +28,20 @@ export async function setSecrets() {
     const credential = new DefaultAzureCredential();
     const client = new SecretClient(url, credential);
     let hasSecretFile: boolean;
-    try {
-        await readFile(path.join(state.options.context, './secret-map.json'));
-        hasSecretFile = true;
-    } catch {
-        hasSecretFile = false;
-    }
-    if (!hasSecretFile) {
-        return;
-    }
     for (let c of radixConfig.spec.components) {
         await setSecretsForComponent(c.name, client, c.secrets);
     }
 }
 
 async function setSecretsForComponent(component: string, client: SecretClient, secrets: string[] = []) {
-    const secretVaultMapping = await readFile(path.join(state.options.context, './secret-map.json'))
-        .then(r => r.toString())
-        .then(str => JSON.parse(str))
-        .then(obj => obj[component]) || {};
-
+    let secretVaultMapping = {};
+    try {
+        const file = await readFile(path.join(state.options.context, './secret-map.json'));
+        const json = JSON.parse(file.toString());
+        secretVaultMapping = json[component] || {};
+    } catch {
+        secretVaultMapping = {};
+    }
 
     const secretMap = new Map();
 
