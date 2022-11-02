@@ -74586,7 +74586,10 @@ function getComponentConfig(components, env, branch) {
             if (!branch) {
                 config.imageTagName = env;
             }
-            config.variables = yield getVariables(comp.name, env);
+            const variables = yield getVariables(comp.name, env);
+            if (variables) {
+                config.variables = variables;
+            }
             comp.environmentConfig.push(config);
         }
         return components;
@@ -74609,12 +74612,12 @@ function getVariables(component, env) {
             file = (yield readFile(external_path_default().join(state_state.options.context, 'variables.json')));
         }
         catch (_a) {
-            return {};
+            return null;
         }
         const json = JSON.parse(file.toString());
         const variables = json[component];
         if (!variables) {
-            return {};
+            return null;
         }
         Object.keys(variables)
             .forEach(key => {

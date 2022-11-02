@@ -49,7 +49,10 @@ async function getComponentConfig(components: Component[], env: string, branch?:
         if (!branch) {
             config.imageTagName = env;
         }
-        config.variables = await getVariables(comp.name, env);
+        const variables = await getVariables(comp.name, env);
+        if (variables) {
+            config.variables = variables;
+        }
         comp.environmentConfig.push(config);
     }
     return components;
@@ -70,12 +73,12 @@ async function getVariables(component: string, env: string): Promise<Variables> 
     try {
         file = await readFile(path.join(state.options.context, 'variables.json')) as Buffer;
     } catch {
-        return {};
+        return null;
     }
     const json = JSON.parse(file.toString());
     const variables: Variables = json[component];
     if (!variables) {
-        return {};
+        return null;
     }
     Object.keys(variables)
         .forEach(key => {
