@@ -95394,7 +95394,10 @@ function getComponentConfig(components, env, branch) {
             const template = componentTemplate[comp.name];
             const config = Object.assign({}, template);
             config.environment = env;
-            if (!branch && !config.imageTagName) {
+            if (config.imageTagName) {
+                config.imageTagName = config.imageTagName.replace('{ENVIRONMENT}', env);
+            }
+            else if (!branch) {
                 config.imageTagName = env;
             }
             const variables = yield getVariables(comp.name, env);

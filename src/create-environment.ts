@@ -46,7 +46,9 @@ async function getComponentConfig(components: Component[], env: string, branch?:
         const template = componentTemplate[comp.name];
         const config = { ...template };
         config.environment = env;
-        if (!branch && !config.imageTagName) {
+        if (config.imageTagName) {
+            config.imageTagName = config.imageTagName.replace('{ENVIRONMENT}', env);
+        } else if (!branch) {
             config.imageTagName = env;
         }
         const variables = await getVariables(comp.name, env);
