@@ -48,7 +48,6 @@ async function getComponentConfig(components: Component[], env: string, branch?:
         config.environment = env;
         if (config.imageTagName) {
             config.imageTagName = config.imageTagName.replace('{ENVIRONMENT}', env);
-            config.imageTagName = `"${config.imageTagName}"`; // enclose with ""
         } else if (!branch) {
             config.imageTagName = env;
         }
