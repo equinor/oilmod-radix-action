@@ -62,8 +62,8 @@ async function getComponentConfig(components: Component[], env: string, branch?:
 
 async function updateConfig(obj: RadixConfig) {
     const doc = new yaml.Document()
-    doc.setSchema()
-    doc.contents = doc.schema.createNode(obj)
+    doc.setSchema('1.1')
+    doc.contents = doc.createNode(obj)
     const toYaml = String(doc);
     await writeFile(state.environment.RADIX_FILE , toYaml, 'utf8');
 }
