@@ -1,4 +1,4 @@
-import commander from 'commander';
+import { program } from 'commander';
 import { clearOrphans } from './src/clean-radix-environments';
 import { createEnvironment } from './src/create-environment';
 import { teardownEnvironment } from './src/teardown';
@@ -10,8 +10,6 @@ import * as github from '@actions/github';
 import { radix } from './src/util';
 import { Response, ResponseInit } from 'node-fetch';
 
-
-const program = commander.program;
 
 program.version('0.0.1');
 

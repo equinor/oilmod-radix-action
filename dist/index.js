@@ -91556,10 +91556,6 @@ var __webpack_exports__ = {};
 // ESM COMPAT FLAG
 __nccwpck_require__.r(__webpack_exports__);
 
-// NAMESPACE OBJECT: ./node_modules/commander/esm.mjs
-var esm_namespaceObject = {};
-__nccwpck_require__.r(esm_namespaceObject);
-
 // EXTERNAL MODULE: ./node_modules/commander/index.js
 var commander = __nccwpck_require__(4379);
 ;// CONCATENATED MODULE: ./node_modules/commander/esm.mjs
@@ -92050,10 +92046,8 @@ var index_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _ar
 
 
 
-const index_program = esm_namespaceObject["default"].program;
-index_program.version('0.0.1');
-index_program
-    .option('-d, --debug', 'Print debug info')
+program.version('0.0.1');
+program.option('-d, --debug', 'Print debug info')
     .option('--create-environment', 'Create radix environment')
     .option('--branch <branchName>', 'Build from branch (optional)')
     .option('--update-secrets', 'Update RADIX secrets')
@@ -92065,9 +92059,9 @@ index_program
     .option('-n, --name <envName>', 'Name of environment', ``)
     .option('-a, --app <appName>', 'Name of application')
     .option('-c, --context <context>', 'Helper-file location', '.');
-index_program.parse(process.argv);
+program.parse(process.argv);
 (() => index_awaiter(void 0, void 0, void 0, function* () {
-    setState(index_program.opts());
+    setState(program.opts());
     const options = state_state.options;
     if (options.createEnvironment) {
         yield createEnvironment();
